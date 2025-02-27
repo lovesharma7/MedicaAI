@@ -1,0 +1,13 @@
+body {
+    background: #f8f9fa;
+  }
+  
+  .container {
+    margin-top: 50px;
+  }
+  
+  .prediction {
+    margin-top: 20px;
+    font-size: 1.2em;
+  }
+  

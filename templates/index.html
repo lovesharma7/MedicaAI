@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Chatbot 💊</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>🤖 Medical Chatbot</h1>
+  <p>Enter your symptoms (comma separated):</p>
+  <input type="text" id="symptomsInput" placeholder="e.g. fever, cough, sore throat" />
+  <button id="submitBtn">Get Diagnosis</button>
+  <div id="result" class="result" style="display:none;"></div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

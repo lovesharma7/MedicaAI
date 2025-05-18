@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MedicalAI Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">🩺 MedicalAI Assistant</div>
+    <div id="chat-box" class="chat-box"></div>
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Type your symptoms..." onkeypress="handleKey(event)" />
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+
+  function handleKey(e) {
+    if (e.key === 'Enter') sendMessage();
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const text = input.value.trim();
+    const chatBox = document.getElementById('chat-box');
+
+    if (!text) return;
+
+    // Show user's message
+    chatBox.innerHTML += `<div class="message user fade-in">${text}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+    input.value = '';
+
+    // Show typing indicator
+    const typingIndicator = document.createElement('div');
+    typingIndicator.className = 'message ai typing fade-in';
+    typingIndicator.innerHTML = `<span class="dots"><span>.</span><span>.</span><span>.</span></span>`;
+    chatBox.appendChild(typingIndicator);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Wait for 1.5 seconds
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    try {
+      const res = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symptoms: text })
+      });
+
+      const data = await res.json();
+
+      // Remove typing indicator
+      typingIndicator.remove();
+
+      // Add response
+      const reply = document.createElement('div');
+      reply.className = 'message ai fade-in';
+      reply.innerHTML = `<strong>Disease:</strong> ${data.disease}<br/><strong>Treatment:</strong> ${data.cure}`;
+      chatBox.appendChild(reply);
+
+    } catch (err) {
+      typingIndicator.remove();
+      chatBox.innerHTML += `<div class="message ai fade-in">❗ Failed to connect to server.</div>`;
+    }
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+
+  </script>
+</body>
+</html>

@@ -852,39 +852,191 @@ body {
 @media (max-width: 768px) {
     .app-container {
         flex-direction: column;
+        height: 100dvh; /* Use 100dvh for better mobile height handling */
     }
     
     .sidebar {
         width: 100%;
         height: auto;
         max-height: 35vh;
+        min-height: unset; /* Ensure it can shrink if content is small */
         overflow-y: auto;
+        border-right: none; /* Remove right border */
+        border-bottom: 1px solid var(--border-color); /* Add bottom border */
     }
-    
+
     .logo {
-        padding: 1rem;
-        min-height: auto;
+        padding: 0.8rem 1rem; /* Further reduced padding for mobile */
+        min-height: 70px; /* Adjust minimum height */
+        display: flex;
+        flex-direction: row; /* Align logo content horizontally */
+        justify-content: space-between;
+        align-items: center;
     }
-    
+
+    .logo h1 {
+        font-size: 1.3rem; /* Slightly smaller on mobile */
+        margin-bottom: 0; /* Remove bottom margin */
+    }
+
+    .logo p {
+        font-size: 0.75rem; /* Slightly smaller on mobile */
+        margin-left: 0.75rem; /* Add some spacing */
+    }
+
+    .sidebar-info {
+        padding: 1rem; /* Adjusted padding */
+        gap: 0.8rem; /* Adjusted gap */
+    }
+
     .info-card {
-        padding: 1rem;
+        padding: 1rem; /* Adjusted padding */
+        border-radius: 10px; /* Slightly smaller radius */
+    }
+
+    .info-card h3 {
+        font-size: 0.9rem; /* Smaller heading */
+        margin-bottom: 0.6rem;
+    }
+
+    .info-card p, .info-card ul {
+        font-size: 0.8rem; /* Smaller text */
+    }
+
+    .info-card ul {
+        margin-left: 1rem;
+        margin-top: 0.4rem;
+    }
+
+    .disclaimer {
+        padding: 0.8rem; /* Adjusted padding */
+        border-radius: 6px; /* Smaller radius */
+    }
+
+    .disclaimer p {
+        font-size: 0.75rem; /* Smaller text */
     }
     
     .chat-container {
         flex: 1;
-    }
-    
-    .message {
-        max-width: 85%;
+        min-height: 65vh; /* Ensure chat container takes remaining height */
+        display: flex; /* Explicitly set display flex for column layout */
+        flex-direction: column;
     }
     
     .chat-header {
-        padding: 0.8rem 1rem;
+        padding: 0.7rem 1rem; /* Adjusted padding */
+    }
+
+    .chat-header h2 {
+        font-size: 1rem; /* Smaller title */
+    }
+
+    .chat-header p {
+        font-size: 0.7rem; /* Smaller text */
+    }
+
+    .chat-avatar {
+        width: 32px; /* Even smaller avatar */
+        height: 32px;
+        font-size: 1rem; /* Smaller icon */
+    }
+
+    .chat-header-actions button {
+        font-size: 0.9rem; /* Smaller icon */
+        padding: 0.4rem;
+    }
+
+    .chat-messages {
+        flex: 1; /* Allow messages to grow */
+        padding: 1rem; /* Reduced padding */
+        gap: 1rem; /* Reduced gap */
+        overflow-y: auto; /* Ensure scrollability */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+    
+    .message {
+        max-width: 90%; /* Wider messages on small screens */
+    }
+
+    .message-content {
+        padding: 0.7rem 0.9rem; /* Adjusted padding */
+        border-radius: 14px; /* Slightly smaller radius */
+    }
+
+    .message-content p {
+        font-size: 0.9rem; /* Slightly smaller message text */
+    }
+
+    .message-time {
+        font-size: 0.65rem; /* Even smaller time */
+    }
+
+    .unified-ai-response {
+        width: 95%; /* Make unified response wider on mobile */
+    }
+
+    .unified-response-header, .prediction-header {
+        padding: 0.7rem 1rem; /* Adjusted padding */
+    }
+
+    .unified-response-header h3, .prediction-header h3 {
+        font-size: 0.9rem; /* Smaller heading */
+    }
+
+    .unified-response-content, .prediction-content {
+        padding: 1rem; /* Adjusted padding */
+    }
+
+    .section-heading {
+        font-size: 0.9rem; /* Smaller section heading */
+    }
+
+    .section-content {
+        font-size: 0.85rem; /* Smaller section content text */
+    }
+
+    .disease-name {
+        font-size: 1rem; /* Smaller disease name */
+    }
+
+    .probability {
+        font-size: 0.75rem; /* Smaller probability text */
+        padding: 0.2rem 0.6rem; /* Adjusted padding */
+    }
+    
+    .chat-input-container {
+        padding: 0.75rem 1rem; /* Reduced padding */
+        gap: 0.6rem; /* Reduced gap */
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08); /* Adjusted shadow */
+    }
+
+    #symptomInput {
+        padding: 0.65rem 0.9rem; /* Reduced padding */
+        font-size: 0.85rem; /* Smaller text */
+        border-radius: 10px; /* Smaller radius */
     }
     
     .send-button {
-        width: 42px;
-        height: 42px;
+        width: 40px; /* Even smaller button */
+        height: 40px;
+        border-radius: 10px; /* Smaller radius */
+    }
+
+    .send-button i {
+        font-size: 0.9rem; /* Smaller icon */
+    }
+
+    .autocomplete-container {
+        max-height: 180px; /* Smaller autocomplete container */
+        border-radius: 10px; /* Smaller radius */
+        margin-top: 0.4rem; /* Reduced margin */
+        padding: 0.3rem 0; /* Reduced padding */
+    }
+
+    .autocomplete-item {
+        padding: 0.6rem 0.9rem; /* Reduced padding */
+        font-size: 0.85rem; /* Smaller text */
     }
 }
 

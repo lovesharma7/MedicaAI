@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="created-by">
-                <p>Powered by Machine Learning</p>
+                <p>Powered by MedicaAI</p>
             </div>
         </div>
         
@@ -105,16 +105,66 @@
         </div>
     </template>
 
+    <!-- New unified AI response template -->
+    <template id="unifiedAiResponseTemplate">
+        <div class="message ai-message unified-ai-response">
+            <div class="message-content">
+                <div class="unified-response-header">
+                    <i class="fas fa-stethoscope"></i>
+                    <h3>Disease Prediction Results</h3>
+                </div>
+                <div class="unified-response-content">
+                    <!-- Disease prediction section -->
+                    <div class="response-section" id="diseasePrediction">
+                        <div class="section-heading">
+                            <i class="fas fa-virus"></i> Predicted Disease
+                        </div>
+                        <div class="section-content disease-name"></div>
+                        <div class="probability"></div>
+                    </div>
+                    
+                    <!-- Description section -->
+                    <div class="response-section" id="diseaseDescription">
+                        <div class="section-heading">
+                            <i class="fas fa-info-circle"></i> Description
+                        </div>
+                        <div class="section-content description"></div>
+                    </div>
+                    
+                    <!-- Symptoms section -->
+                    <div class="response-section" id="commonSymptoms">
+                        <div class="section-heading">
+                            <i class="fas fa-clipboard-list"></i> Common Symptoms
+                        </div>
+                        <div class="section-content symptoms-list"></div>
+                    </div>
+                    
+                    <!-- Recommendations section -->
+                    <div class="response-section" id="recommendations">
+                        <div class="section-heading">
+                            <i class="fas fa-hand-holding-medical"></i> Recommendations
+                        </div>
+                        <div class="section-content recommendations-list"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="message-time"></div>
+        </div>
+    </template>
+
+    <!-- Keep the old template for backward compatibility if needed -->
     <template id="predictionMessageTemplate">
         <div class="message ai-message prediction-message">
-            <div class="prediction-header">
-                <i class="fas fa-stethoscope"></i>
-                <h3>Disease Prediction</h3>
-            </div>
-            <div class="prediction-content">
-                <div class="disease-name"></div>
-                <div class="probability"></div>
-                <div class="description"></div>
+            <div class="message-content">
+                <div class="prediction-header">
+                    <i class="fas fa-stethoscope"></i>
+                    <h3>Disease Prediction</h3>
+                </div>
+                <div class="prediction-content">
+                    <div class="disease-name"></div>
+                    <div class="probability"></div>
+                    <div class="description"></div>
+                </div>
             </div>
             <div class="message-time"></div>
         </div>

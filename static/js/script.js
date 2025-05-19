@@ -78,8 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
             loadingOverlay.style.display = 'none';
             
             if (data.status === 'success') {
-                // Process and display messages
-                processResponseMessages(data.messages);
+                // Process and display messages in a compact form
+                processCompactResponse(data.messages);
             } else {
                 // Display error message
                 addAIMessage(`Error: ${data.error || 'Something went wrong. Please try again.'}`);
@@ -93,37 +93,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     /**
-     * Process response messages from backend
+     * Process response messages from backend in a compact form
      */
-    function processResponseMessages(messages) {
+    function processCompactResponse(messages) {
         if (!messages || messages.length === 0) {
             addAIMessage('No results were returned. Please try different symptoms.');
             return;
         }
         
-        // Add each message with small delay for better UX
-        messages.forEach((message, index) => {
-            setTimeout(() => {
-                displayMessage(message);
-            }, index * 300);
+        // Group messages by type for compact display
+        let compactContent = '';
+        let predictionData = null;
+        
+        messages.forEach(message => {
+            if (message.type === 'prediction') {
+                predictionData = message;
+            } else {
+                // Extract title from the content if possible
+                let title = '';
+                let content = message.content || 'No content available';
+                
+                // Try to identify if there's a title in the content
+                if (message.type === 'precautions') {
+                    title = 'Precautions';
+                } else if (message.type === 'alternatives') {
+                    title = 'Alternative Diagnoses';
+                } else if (message.type === 'symptoms') {
+                    title = 'Related Symptoms';
+                }
+                
+                if (title) {
+                    compactContent += `<h4>${title}</h4><p>${content}</p>`;
+                } else {
+                    compactContent += `<p>${content}</p>`;
+                }
+            }
         });
-    }
-    
-    /**
-     * Display a message based on its type
-     */
-    function displayMessage(message) {
-        switch(message.type) {
-            case 'prediction':
-                addPredictionMessage(message.disease, message.probability, message.description);
-                break;
-            case 'precautions':
-            case 'alternatives':
-            case 'symptoms':
-            case 'text':
-            default:
-                addAIMessage(message.content || 'No content available');
-                break;
+        
+        // Display prediction message first if it exists
+        if (predictionData) {
+            addCompactPredictionMessage(predictionData.disease, predictionData.probability, predictionData.description, compactContent);
+        } else if (compactContent) {
+            addFormattedAIMessage(compactContent);
         }
     }
     
@@ -164,14 +175,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     /**
-     * Add a prediction message with special formatting
+     * Add a formatted AI message with HTML content
      */
-    function addPredictionMessage(disease, probability, description) {
+    function addFormattedAIMessage(htmlContent) {
+        const clone = document.importNode(aiMessageTemplate.content, true);
+        
+        // Set HTML content directly
+        const content = clone.querySelector('.message-content');
+        content.innerHTML = htmlContent;
+        
+        clone.querySelector('.message-time').textContent = getCurrentTime();
+        
+        // Add to chat and scroll to bottom
+        chatMessages.appendChild(clone);
+        scrollToBottom();
+    }
+    
+    /**
+     * Add a compact prediction message with additional content
+     */
+    function addCompactPredictionMessage(disease, probability, description, additionalContent) {
         const clone = document.importNode(predictionMessageTemplate.content, true);
         
         clone.querySelector('.disease-name').textContent = disease;
         clone.querySelector('.probability').textContent = probability;
         clone.querySelector('.description').textContent = description;
+        
+        // Add additional content if provided
+        if (additionalContent) {
+            const additionalEl = document.createElement('div');
+            additionalEl.className = 'additional-info';
+            additionalEl.innerHTML = additionalContent;
+            clone.querySelector('.message-content').appendChild(additionalEl);
+        }
+        
         clone.querySelector('.message-time').textContent = getCurrentTime();
         
         // Add to chat and scroll to bottom

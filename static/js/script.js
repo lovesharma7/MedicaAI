@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     /**
      * Process response messages from backend in a compact form
      */
+    // Replace the processCompactResponse function with this updated version:
     function processCompactResponse(messages) {
         if (!messages || messages.length === 0) {
             addAIMessage('No results were returned. Please try different symptoms.');
@@ -113,19 +114,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 let title = '';
                 let content = message.content || 'No content available';
                 
-                // Try to identify if there's a title in the content
+                // Clean up content based on message type
                 if (message.type === 'precautions') {
                     title = 'Precautions';
+                    // Remove any variation of "Precautions" or "Recommended Precautions" from the content
+                    content = content.replace(/^(precautions|recommended precautions):?\s*/i, '');
+                    content = content.replace(/^recommended precautions:?\s*/i, '');
+                    content = content.replace(/^precautions:?\s*/i, '');
                 } else if (message.type === 'alternatives') {
                     title = 'Alternative Diagnoses';
+                    // Remove any variation of "Alternative Diagnoses" from the content
+                    content = content.replace(/^alternative diagnoses:?\s*/i, '');
+                    content = content.replace(/^other possible diseases:?\s*/i, '');
                 } else if (message.type === 'symptoms') {
                     title = 'Related Symptoms';
+                    // Remove any variation of "Related Symptoms" from the content
+                    content = content.replace(/^related symptoms:?\s*/i, '');
+                    content = content.replace(/^symptom severity:?\s*/i, '');
                 }
                 
                 if (title) {
-                    compactContent += `<h4>${title}</h4><p>${content}</p>`;
+                    compactContent += `<div class="info-section"><h4>${title}</h4><p>${content}</p></div>`;
                 } else {
-                    compactContent += `<p>${content}</p>`;
+                    compactContent += `<div class="info-section"><p>${content}</p></div>`;
                 }
             }
         });

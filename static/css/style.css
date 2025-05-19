@@ -803,3 +803,27 @@ body {
         height: 100vh;
     }
 }
+
+/* CSS to add to your stylesheet */
+.info-section {
+    margin-bottom: 12px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.info-section h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.info-section p {
+    margin: 0;
+}
+
+.additional-info {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}

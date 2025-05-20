@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedicaAI - Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>MedicaAI</h1>
+                <p>Disease Prediction System</p>
+            </div>
+            <div class="sidebar-info">
+                <div class="info-card">
+                    <h3><i class="fas fa-info-circle"></i> How It Works</h3>
+                    <p>Enter your symptoms separated by commas, and our AI will predict possible diseases and provide helpful information.</p>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-lightbulb"></i> Example Symptoms</h3>
+                    <ul>
+                        <li>fever, cough, sore throat</li>
+                        <li>headache, fatigue, nausea</li>
+                        <li>chest pain, shortness of breath</li>
+                    </ul>
+                </div>
+                <div class="disclaimer">
+                    <p><i class="fas fa-exclamation-triangle"></i> <strong>Disclaimer:</strong> This is not a substitute for professional medical advice. Please consult a healthcare provider for proper diagnosis.</p>
+                </div>
+            </div>
+            <div class="created-by">
+                <p>Powered by MedicaAI</p>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <h2>MedicaAI Assistant</h2>
+                        <p>Online</p>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button id="theme-toggle" aria-label="Toggle theme" title="Toggle Theme">
+                        <i class="fas fa-moon"></i> </button>
+                    <button id="clearChat" title="Clear Chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        <p>👋 Hello! I'm your MedicaAI assistant. I can help predict possible diseases based on your symptoms.</p>
+                        <p>Please enter your symptoms separated by commas (e.g., "fever, cough, headache").</p>
+                    </div>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="symptomInput" placeholder="Enter your symptoms separated by commas..." autocomplete="off">
+                    <div id="autocompleteContainer" class="autocomplete-container"></div>
+                </div>
+                <button id="sendButton" class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Analyzing symptoms...</p>
+    </div>
+
+    <template id="userMessageTemplate">
+        <div class="message user-message">
+            <div class="message-content">
+                <p></p>
+            </div>
+            <div class="message-time"></div>
+        </div>
+    </template>
+
+    <template id="aiMessageTemplate">
+        <div class="message ai-message">
+            <div class="message-content">
+                <p></p>
+            </div>
+            <div class="message-time"></div>
+        </div>
+    </template>
+
+    <template id="unifiedAiResponseTemplate">
+        <div class="message ai-message unified-ai-response">
+            <div class="message-content">
+                <div class="unified-response-header">
+                    <i class="fas fa-stethoscope"></i>
+                    <h3>Disease Prediction Results</h3>
+                </div>
+                <div class="unified-response-content">
+                    <div class="response-section" id="diseasePrediction">
+                        <div class="section-heading">
+                            <i class="fas fa-virus"></i> Predicted Disease
+                        </div>
+                        <div class="section-content disease-name"></div>
+                        <div class="probability"></div>
+                    </div>
+                    
+                    <div class="response-section" id="diseaseDescription">
+                        <div class="section-heading">
+                            <i class="fas fa-info-circle"></i> Description
+                        </div>
+                        <div class="section-content description"></div>
+                    </div>
+                    
+                    <div class="response-section" id="commonSymptoms">
+                        <div class="section-heading">
+                            <i class="fas fa-clipboard-list"></i> Common Symptoms
+                        </div>
+                        <div class="section-content symptoms-list"></div>
+                    </div>
+                    
+                    <div class="response-section" id="recommendations">
+                        <div class="section-heading">
+                            <i class="fas fa-hand-holding-medical"></i> Recommendations
+                        </div>
+                        <div class="section-content recommendations-list"></div>
+                    </div>
+
+                    <div class="response-section" id="precautions">
+                         <div class="section-heading">
+                            <i class="fas fa-shield-alt"></i> Precautions
+                        </div>
+                        <div class="section-content precautions-list"></div>
+                    </div>
+
+                    <div class="response-section" id="alternativeDiagnoses">
+                        <div class="section-heading">
+                            <i class="fas fa-random"></i> Alternative Diagnoses
+                        </div>
+                        <div class="section-content alternative-diagnoses-list"></div>
+                    </div>
+
+                    <div class="response-section" id="relatedSymptoms">
+                         <div class="section-heading">
+                            <i class="fas fa-diagnoses"></i> Related Symptoms
+                        </div>
+                        <div class="section-content related-symptoms-list"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="message-time"></div>
+        </div>
+    </template>
+
+    <template id="predictionMessageTemplate">
+        <div class="message ai-message prediction-message">
+            <div class="message-content">
+                <div class="prediction-header">
+                    <i class="fas fa-stethoscope"></i>
+                    <h3>Disease Prediction</h3>
+                </div>
+                <div class="prediction-content">
+                    <div class="disease-name"></div>
+                    <div class="probability"></div>
+                    <div class="description"></div>
+                </div>
+            </div>
+            <div class="message-time"></div>
+        </div>
+    </template>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+</body>
+</html>
